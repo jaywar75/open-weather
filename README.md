@@ -1,42 +1,65 @@
 # Open Weather MCP Client
 
-This project demonstrates how to use the OpenWeather MCP server in a Python application via Docker.
+A full-stack application for fetching and displaying weather data using the OpenWeather MCP server, with data archiving in PostgreSQL.
+
+## Features
+
+- **Backend**: FastAPI server with PostgreSQL for data persistence
+- **Frontend**: Next.js with TypeScript, TSX, and Tailwind CSS
+- **MCP Integration**: Connects to OpenWeather MCP server via Docker
+- **Data Archiving**: Weather results stored in PostgreSQL for historical analysis
+
+## Architecture
+
+- **Database**: PostgreSQL for weather data storage
+- **Backend**: Python/FastAPI for API endpoints and MCP client integration
+- **Frontend**: React/Next.js for user interface
+- **MCP Server**: Dockerized OpenWeather MCP server for weather data retrieval
 
 ## Setup
 
-1. Get OpenWeatherMap API key from https://openweathermap.org/api
+1. **Prerequisites**:
+   - Docker and Docker Compose
+   - OpenWeatherMap API key
 
-2. Set the API key in .env file: OWM_API_KEY=your_key
+2. **Clone and configure**:
+   ```bash
+   git clone https://github.com/jaywar75/open-weather.git
+   cd open-weather
+   cp .env.example .env  # Add your OWM_API_KEY
+   ```
 
-3. Build the MCP server Docker image: ./build.sh
+3. **Build and run**:
+   ```bash
+   docker-compose up --build
+   ```
 
-4. Install dependencies: uv sync
+4. **Access**:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Docs: http://localhost:8000/docs
 
-5. Run the client: uv run python client.py (local) or docker-compose up (containerized)
+## API Endpoints
+
+- `POST /weather`: Fetch and store weather data
+- `GET /weather/history`: Retrieve historical weather data
 
 ## Usage
 
-The client provides an interactive command-line interface:
+1. Open the frontend at http://localhost:3000
+2. Enter a city name, select units and language
+3. Click "Get Weather" to fetch and display data
+4. Data is automatically archived in PostgreSQL
 
-- Enter a city name to get weather data
-- Specify units: c (Celsius), f (Fahrenheit), k (Kelvin)
-- Specify language (e.g., en, de, fr)
-- Type 'quit' to exit
+## Development
 
-## Requirements
+- Backend: `uv run uvicorn main:app --reload`
+- Frontend: `cd frontend && npm run dev`
+- Database: Access via `docker-compose exec db psql -U user -d openweather`
 
-- Python 3.11+
-- uv package manager
-- Docker
-- OpenWeatherMap API key
+## Technologies
 
-## Project Structure
-
-- `client.py`: Interactive client application
-- `pyproject.toml`: Project configuration and dependencies
-- `uv.lock`: Locked dependencies
-- `build.sh`: Script to build the MCP server Docker image
-- `Dockerfile`: Container definition for the client
-- `docker-compose.yml`: Orchestration for containerized run
-- `.env`: Environment variables (API key)
-- `.gitignore`: Git ignore file
+- **Backend**: Python, FastAPI, SQLAlchemy, PostgreSQL
+- **Frontend**: TypeScript, React, Next.js, Tailwind CSS
+- **Infrastructure**: Docker, Docker Compose
+- **MCP**: Model Context Protocol for AI tool integration
