@@ -6,4 +6,9 @@ requires-python = ">=3.11,<3.14"
 dependencies = [
     "mcp",
     "python-dotenv",
+    "fastapi",
+    "uvicorn",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "alembic",
 ]
