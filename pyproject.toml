@@ -1,0 +1,12 @@
+[project]
+name = "open-weather-mcp-client"
+version = "0.1.0"
+description = "Client application using OpenWeather MCP server via Docker"
+dependencies = [
+    "mcp",
+    "python-dotenv",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
