@@ -9,6 +9,8 @@ class WeatherData(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     city = Column(String, index=True)
+    state = Column(String)
+    zip_code = Column(String)
     temperature = Column(Float)
     temperature_unit = Column(String)
     conditions = Column(Text)
