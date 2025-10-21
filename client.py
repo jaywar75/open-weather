@@ -24,13 +24,30 @@ async def main():
 
             # List available tools
             tools = await session.list_tools()
-            print("Available tools:", [tool.name for tool in tools])
+            print("Connected to OpenWeather MCP Server")
+            print("Available tools:", [tool.name for tool in tools.tools])
 
-            # Call the weather tool
-            result = await session.call_tool("weather", {"city": "London", "units": "c", "lang": "en"})
-            print("Weather result:")
-            for content in result.content:
-                print(content.text)
+            # Interactive loop
+            while True:
+                try:
+                    city = input("Enter city (or 'quit' to exit): ").strip()
+                    if city.lower() == 'quit':
+                        break
+                    if not city:
+                        continue
+
+                    units = input("Units (c/f/k, default c): ").strip() or 'c'
+                    lang = input("Language (default en): ").strip() or 'en'
+
+                    # Call the weather tool
+                    result = await session.call_tool("weather", {"city": city, "units": units, "lang": lang})
+                    print("\nWeather result:")
+                    for content in result.content:
+                        print(content.text)
+                    print("\n" + "="*50 + "\n")
+                except Exception as e:
+                    print(f"Error: {e}")
+                    print("Please try again.\n")
 
 if __name__ == "__main__":
     asyncio.run(main())

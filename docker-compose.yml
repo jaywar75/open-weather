@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: openweather
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://user:password@db/openweather
+      DOCKER_HOST: unix:///var/run/docker.sock
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./main.py:/app/main.py
+      - ./models.py:/app/models.py
+      - ./database.py:/app/database.py
+      - ./client.py:/app/client.py
+      - ./migrate_db.py:/app/migrate_db.py
+    command: ["uv", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "4444:4444"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - /app/node_modules
+      - /app/.next
+    command: ["npm", "run", "dev"]
+
+  client:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

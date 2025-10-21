@@ -1,29 +1,65 @@
 # Open Weather MCP Client
 
-This project demonstrates how to use the OpenWeather MCP server in a Python application via Docker.
+A full-stack application for fetching and displaying weather data using the OpenWeather MCP server, with data archiving in PostgreSQL.
+
+## Features
+
+- **Backend**: FastAPI server with PostgreSQL for data persistence
+- **Frontend**: Next.js with TypeScript, TSX, and Tailwind CSS
+- **MCP Integration**: Connects to OpenWeather MCP server via Docker
+- **Data Archiving**: Weather results stored in PostgreSQL for historical analysis
+
+## Architecture
+
+- **Database**: PostgreSQL for weather data storage
+- **Backend**: Python/FastAPI for API endpoints and MCP client integration
+- **Frontend**: React/Next.js for user interface
+- **MCP Server**: Dockerized OpenWeather MCP server for weather data retrieval
 
 ## Setup
 
-1. Get OpenWeatherMap API key from https://openweathermap.org/api
+1. **Prerequisites**:
+   - Docker and Docker Compose
+   - OpenWeatherMap API key
 
-2. Set the API key in .env file: OWM_API_KEY=your_key
+2. **Clone and configure**:
+   ```bash
+   git clone https://github.com/jaywar75/open-weather.git
+   cd open-weather
+   cp .env.example .env  # Add your OWM_API_KEY
+   ```
 
-3. Build the MCP server Docker image: ./build.sh
+3. **Build and run**:
+   ```bash
+   docker-compose up --build
+   ```
 
-4. Install dependencies: pip install -e .
+4. **Access**:
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Docs: http://localhost:8000/docs
 
-5. Run the client: python client.py
+## API Endpoints
 
-## Requirements
+- `POST /weather`: Fetch and store weather data
+- `GET /weather/history`: Retrieve historical weather data
 
-- Python 3.8+
-- Docker
-- OpenWeatherMap API key
+## Usage
 
-## Project Structure
+1. Open the frontend at http://localhost:3000
+2. Enter a city name, select units and language
+3. Click "Get Weather" to fetch and display data
+4. Data is automatically archived in PostgreSQL
 
-- `client.py`: Main client application that connects to the MCP server
-- `pyproject.toml`: Project configuration and dependencies
-- `build.sh`: Script to build the MCP server Docker image
-- `.env`: Environment variables (API key)
-- `.gitignore`: Git ignore file
+## Development
+
+- Backend: `uv run uvicorn main:app --reload`
+- Frontend: `cd frontend && npm run dev`
+- Database: Access via `docker-compose exec db psql -U user -d openweather`
+
+## Technologies
+
+- **Backend**: Python, FastAPI, SQLAlchemy, PostgreSQL
+- **Frontend**: TypeScript, React, Next.js, Tailwind CSS
+- **Infrastructure**: Docker, Docker Compose
+- **MCP**: Model Context Protocol for AI tool integration
